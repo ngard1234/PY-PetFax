@@ -13,7 +13,7 @@ bp = Blueprint('pet', __name__, url_prefix="/pets")
 def index(): 
     return render_template('pets/index.html', pets=pets) # pass the loaded variable pets to the argument pets in index.html.
 
-@bp.route('/<int:pet_id>')
-def show_pets(pet_id): 
-    pet = pets[pet_id]
-    return render_template('pets/show_pets.html', pet=pet)
+@bp.route('/<int:id>')
+def show(id): 
+    pet = pets[id - 1]
+    return render_template('pets/show.html', pet = pet)

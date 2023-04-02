@@ -1,12 +1,22 @@
 
 # The __init__.py file is where we want to initially configure Flask and write the function that will create the instance of our app.
 from flask import Flask 
+from flask_migrate import Migrate
 
-def create_app(): # application factory create an instance of app from Flask.
+# factory 
+def create_app(): 
     app = Flask(__name__)
 
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:boilerplate@localhost:5432/petfax'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+
+    from . import models 
+    models.db.init_app(app)
+    migrate = Migrate(app, models.db)            
+
+    #index route
     @app.route('/') 
-    def hello(): 
+    def index(): 
         return 'Hello, PetFax!'
 
     # register pet blueprint 
@@ -19,3 +29,6 @@ def create_app(): # application factory create an instance of app from Flask.
 
     # return the app 
     return app
+
+
+
